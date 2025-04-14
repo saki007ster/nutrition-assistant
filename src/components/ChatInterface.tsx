@@ -5,11 +5,7 @@ import { Button } from './ui/button';
 import { ScrollArea } from './ui/scroll-area';
 import { Textarea } from './ui/textarea';
 import { UserProfile } from '@/types/database';
-
-interface Message {
-  role: 'user' | 'assistant';
-  content: string;
-}
+import { Message } from '@/types/chat';
 
 interface ChatInterfaceProps {
   userProfile: UserProfile;
@@ -74,7 +70,11 @@ export default function ChatInterface({ userProfile }: ChatInterfaceProps) {
     setError(null);
     setIsLoading(true);
 
-    const newUserMessage: Message = { role: 'user', content: userMessage };
+    const newUserMessage: Message = { 
+      role: 'user', 
+      content: userMessage,
+      timestamp: new Date()
+    };
     setMessages(prev => [...prev, newUserMessage]);
 
     try {
@@ -86,7 +86,10 @@ export default function ChatInterface({ userProfile }: ChatInterfaceProps) {
         body: JSON.stringify({
           message: userMessage,
           userProfile,
-          history: messages,
+          history: messages.map(msg => ({
+            ...msg,
+            timestamp: msg.timestamp.toISOString()
+          })),
         }),
       });
 
@@ -96,7 +99,11 @@ export default function ChatInterface({ userProfile }: ChatInterfaceProps) {
       }
 
       const data = await response.json();
-      const assistantMessage: Message = { role: 'assistant', content: data.message };
+      const assistantMessage: Message = { 
+        role: 'assistant', 
+        content: data.message,
+        timestamp: new Date()
+      };
       setMessages(prev => [...prev, assistantMessage]);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to get response. Please try again.');
