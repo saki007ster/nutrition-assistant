@@ -86,9 +86,10 @@ export default function ChatInterface({ userProfile }: ChatInterfaceProps) {
         body: JSON.stringify({
           message: userMessage,
           userProfile,
+          // Only send the necessary fields for the chat API
           history: messages.map(msg => ({
-            ...msg,
-            timestamp: msg.timestamp.toISOString()
+            role: msg.role,
+            content: msg.content
           })),
         }),
       });

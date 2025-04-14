@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import OpenAI from 'openai';
 import { ChatCompletionMessageParam } from 'openai/resources/chat/completions';
-import { Message } from '@/types/chat';
 import { UserProfile } from '@/types/database';
 
 if (!process.env.OPENAI_API_KEY) {
@@ -54,7 +53,7 @@ setInterval(() => {
 interface ChatRequest {
   message: string;
   userProfile: UserProfile;
-  history: Message[];
+  history: { role: 'user' | 'assistant'; content: string; }[];
 }
 
 export async function POST(request: Request) {
@@ -123,7 +122,7 @@ Format your responses using these rules:
 
     const messages: ChatCompletionMessageParam[] = [
       { role: "system", content: systemMessage },
-      ...(Array.isArray(history) ? history.map((msg: { role: string; content: string }) => ({
+      ...(Array.isArray(history) ? history.map((msg) => ({
         role: msg.role as "user" | "assistant",
         content: msg.content,
       })) : []),
