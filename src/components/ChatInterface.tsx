@@ -86,7 +86,6 @@ export default function ChatInterface({ userProfile }: ChatInterfaceProps) {
         body: JSON.stringify({
           message: userMessage,
           userProfile,
-          // Only send the necessary fields for the chat API
           history: messages.map(msg => ({
             role: msg.role,
             content: msg.content
@@ -117,73 +116,75 @@ export default function ChatInterface({ userProfile }: ChatInterfaceProps) {
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-12rem)] max-w-4xl mx-auto border overflow-scroll rounded-lg bg-white">
-      <div className="flex-1 relative">
-        <ScrollArea className="absolute inset-0">
-          <div className="p-4 space-y-4">
-            {messages.length === 0 ? (
-              <div className="text-center text-gray-500">
-                <p>👋 Hi! I&apos;m your nutrition assistant. I can help you with:</p>
-                <ul className="mt-2 space-y-1 text-sm">
-                  <li>• Personalized meal planning</li>
-                  <li>• Recipe suggestions</li>
-                  <li>• Nutritional advice</li>
-                  <li>• Diet-specific recommendations</li>
-                </ul>
-                <p className="mt-2 text-sm">How can I assist you today?</p>
-              </div>
-            ) : (
-              messages.map((message, index) => (
+    <div className="flex flex-col h-full">
+      <div className="flex-1 overflow-y-auto">
+        <div className="p-4 space-y-4">
+          {messages.length === 0 ? (
+            <div className="text-center text-gray-500">
+              <p>👋 Hi! I&apos;m your nutrition assistant. I can help you with:</p>
+              <ul className="mt-2 space-y-1 text-sm">
+                <li>• Personalized meal planning</li>
+                <li>• Recipe suggestions</li>
+                <li>• Nutritional advice</li>
+                <li>• Diet-specific recommendations</li>
+              </ul>
+              <p className="mt-2 text-sm">How can I assist you today?</p>
+            </div>
+          ) : (
+            messages.map((message, index) => (
+              <div
+                key={index}
+                className={`flex ${
+                  message.role === 'user' ? 'justify-end' : 'justify-start'
+                }`}
+              >
                 <div
-                  key={index}
-                  className={`flex ${
-                    message.role === 'user' ? 'justify-end' : 'justify-start'
+                  className={`max-w-[80%] p-3 rounded-lg ${
+                    message.role === 'user'
+                      ? 'bg-gradient-to-r from-blue-500 to-indigo-500 text-white'
+                      : 'bg-white shadow-sm border border-blue-100'
                   }`}
                 >
-                  <div
-                    className={`max-w-[80%] p-3 rounded-lg ${
-                      message.role === 'user'
-                        ? 'bg-blue-500 text-white'
-                        : 'bg-gray-100 text-gray-900'
-                    }`}
-                  >
-                    {message.role === 'assistant'
-                      ? formatAssistantMessage(message.content)
-                      : message.content}
-                  </div>
-                </div>
-              ))
-            )}
-            {isLoading && (
-              <div className="flex justify-start">
-                <div className="max-w-[80%] p-3 rounded-lg bg-gray-100">
-                  <div className="animate-pulse flex space-x-2">
-                    <div className="h-2 w-2 bg-gray-400 rounded-full"></div>
-                    <div className="h-2 w-2 bg-gray-400 rounded-full"></div>
-                    <div className="h-2 w-2 bg-gray-400 rounded-full"></div>
-                  </div>
+                  {message.role === 'assistant'
+                    ? formatAssistantMessage(message.content)
+                    : message.content}
                 </div>
               </div>
-            )}
-            {error && (
-              <div className="flex justify-center">
-                <div className="text-red-500 text-sm">{error}</div>
+            ))
+          )}
+          {isLoading && (
+            <div className="flex justify-start">
+              <div className="max-w-[80%] p-3 rounded-lg bg-white shadow-sm border border-blue-100">
+                <div className="animate-pulse flex space-x-2">
+                  <div className="h-2 w-2 bg-blue-400 rounded-full"></div>
+                  <div className="h-2 w-2 bg-blue-400 rounded-full"></div>
+                  <div className="h-2 w-2 bg-blue-400 rounded-full"></div>
+                </div>
               </div>
-            )}
-            <div ref={messagesEndRef} />
-          </div>
-        </ScrollArea>
+            </div>
+          )}
+          {error && (
+            <div className="flex justify-center">
+              <div className="text-red-500 text-sm bg-red-50 px-4 py-2 rounded-lg">{error}</div>
+            </div>
+          )}
+          <div ref={messagesEndRef} />
+        </div>
       </div>
-      <div className="border-t bg-white p-4">
+      <div className="border-t border-blue-100 bg-white p-4 sticky bottom-0">
         <form onSubmit={handleSubmit} className="flex gap-2">
           <Textarea
             value={input}
             onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setInput(e.target.value)}
             placeholder="Type your message..."
-            className="flex-grow min-h-[44px] max-h-32"
+            className="flex-grow min-h-[44px] max-h-32 bg-white/80 backdrop-blur-sm border-blue-100 focus:border-blue-500 focus:ring-blue-500"
             rows={1}
           />
-          <Button type="submit" disabled={isLoading}>
+          <Button 
+            type="submit" 
+            disabled={isLoading}
+            className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white"
+          >
             {isLoading ? 'Sending...' : 'Send'}
           </Button>
         </form>
