@@ -2,6 +2,9 @@ import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
+// Define public routes that don't require authentication
+const publicRoutes = ['/', '/privacy', '/features'];
+
 export async function middleware(request: NextRequest) {
   try {
     // Create a response and get the cookies
@@ -13,11 +16,16 @@ export async function middleware(request: NextRequest) {
     // Refresh session if expired - required for Server Components
     await supabase.auth.getSession();
 
-    // If there is no session and the user is trying to access a protected route
     const {
       data: { session },
     } = await supabase.auth.getSession();
 
+    // Allow access to public routes without authentication
+    if (publicRoutes.includes(request.nextUrl.pathname)) {
+      return response;
+    }
+
+    // If there is no session and the user is trying to access a protected route
     if (!session && !request.nextUrl.pathname.startsWith('/auth')) {
       const redirectUrl = new URL('/auth/signin', request.url);
       redirectUrl.searchParams.set('redirectedFrom', request.nextUrl.pathname);
@@ -26,7 +34,7 @@ export async function middleware(request: NextRequest) {
 
     // If there is a session and the user is trying to access auth routes
     if (session && request.nextUrl.pathname.startsWith('/auth')) {
-      return NextResponse.redirect(new URL('/dashboard', request.url));
+      return NextResponse.redirect(new URL('/agent', request.url));
     }
 
     return response;

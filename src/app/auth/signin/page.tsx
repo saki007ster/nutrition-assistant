@@ -56,8 +56,8 @@ function SignInContent() {
         return;
       }
 
-      // Get the redirect URL from query params or default to dashboard
-      const redirectTo = searchParams.get('redirectedFrom') || '/dashboard';
+      // Get the redirect URL from query params or default to agent
+      const redirectTo = searchParams.get('redirectedFrom') || '/agent';
       router.push(redirectTo);
       router.refresh();
     } catch (err) {

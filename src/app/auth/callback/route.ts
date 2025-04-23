@@ -26,7 +26,7 @@ export async function GET(request: Request) {
     await supabase.auth.exchangeCodeForSession(code);
 
     // URL to redirect to after sign in process completes
-    return NextResponse.redirect(new URL('/dashboard', request.url));
+    return NextResponse.redirect(new URL('/agent', request.url));
   } catch (error) {
     console.error('Auth callback error:', error);
     // In case of any error, redirect to signin with a generic error message

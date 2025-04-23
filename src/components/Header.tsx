@@ -45,10 +45,10 @@ export default function Header() {
             {user ? (
               <>
                 <Link 
-                  href="/dashboard"
+                  href="/agent"
                   className="text-gray-600 hover:text-gray-900"
                 >
-                  Dashboard
+                  Agent
                 </Link>
                 <Link 
                   href="/settings"
