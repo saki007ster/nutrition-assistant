@@ -5,7 +5,6 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { motion } from 'framer-motion';
 import { 
@@ -13,7 +12,6 @@ import {
   Mail, 
   ArrowRight, 
   AlertCircle, 
-  Brain,
   Sparkles,
   UserPlus
 } from 'lucide-react';

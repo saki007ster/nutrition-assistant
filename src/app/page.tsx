@@ -4,19 +4,15 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { 
-  ArrowRight, 
-  Brain, 
+  ArrowRight,
   ChefHat, 
   Heart, 
   Scale, 
   Users,
   Star,
   Sparkles,
-  Apple,
-  Carrot,
   Zap,
   ChevronRight
 } from 'lucide-react';
@@ -45,7 +41,6 @@ const staggerContainer = {
 };
 
 export default function Home() {
-  const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const supabase = createClientComponentClient();
@@ -355,9 +350,11 @@ export default function Home() {
                 className="relative rounded-2xl bg-white/80 backdrop-blur-sm p-6 sm:p-8 shadow-sm hover:shadow-md transition-all duration-200 border border-blue-100"
               >
                 <div className="flex items-center gap-4">
-                  <img
+                  <Image
                     src={testimonial.image}
-                    alt=""
+                    alt={testimonial.name}
+                    width={40}
+                    height={40}
                     className="h-12 w-12 rounded-full object-cover ring-2 ring-blue-100"
                   />
                   <div>

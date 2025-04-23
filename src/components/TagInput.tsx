@@ -1,4 +1,4 @@
-import React, { useState, KeyboardEvent, useRef, useEffect } from 'react';
+import React, { useState, KeyboardEvent, useRef, useEffect, useCallback } from 'react';
 import { X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -17,6 +17,14 @@ export default function TagInput({ tags, onTagsChange, placeholder, icon, label,
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  const addTag = useCallback(() => {
+    const trimmedInput = input.trim();
+    if (trimmedInput && !tags.includes(trimmedInput)) {
+      onTagsChange([...tags, trimmedInput]);
+    }
+    setInput('');
+  }, [input, tags, onTagsChange]);
+
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' || e.key === ',') {
       e.preventDefault();
@@ -24,14 +32,6 @@ export default function TagInput({ tags, onTagsChange, placeholder, icon, label,
     } else if (e.key === 'Backspace' && input === '' && tags.length > 0) {
       removeTag(tags.length - 1);
     }
-  };
-
-  const addTag = () => {
-    const trimmedInput = input.trim();
-    if (trimmedInput && !tags.includes(trimmedInput)) {
-      onTagsChange([...tags, trimmedInput]);
-    }
-    setInput('');
   };
 
   const removeTag = (indexToRemove: number) => {
@@ -56,7 +56,7 @@ export default function TagInput({ tags, onTagsChange, placeholder, icon, label,
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [input]);
+  }, [input, addTag]);
 
   return (
     <div className="space-y-1">

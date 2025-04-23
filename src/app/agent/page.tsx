@@ -8,7 +8,7 @@ import ChatInterface from '@/components/ChatInterface';
 import OnboardingModal from '@/components/OnboardingModal';
 import { UserProfile } from '@/types/database';
 import { motion } from 'framer-motion';
-import { MessageSquare, Apple, Utensils, Scale, Brain, Info, Sparkles, Zap, Target, ChevronRight } from 'lucide-react';
+import { MessageSquare, Apple, Utensils, Scale, Info, Sparkles, Zap, Target, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
 
 const exampleQueries = [
@@ -276,7 +276,7 @@ export default function AgentPage() {
                       whileHover={{ scale: 1.02 }}
                       className="p-3 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg hover:from-blue-100 hover:to-indigo-100 cursor-pointer transition-colors text-sm group flex items-center justify-between"
                     >
-                      <span>"{query}"</span>
+                      <span>&ldquo;{query}&rdquo;</span>
                       <ChevronRight className="h-4 w-4 text-blue-500 opacity-0 group-hover:opacity-100 transition-opacity" />
                     </motion.div>
                   ))}

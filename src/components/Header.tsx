@@ -5,7 +5,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
 import { User } from '@supabase/supabase-js';
 
 export default function Header() {

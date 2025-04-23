@@ -11,9 +11,7 @@ import {
   Target, 
   Apple, 
   Utensils, 
-  Scale, 
-  Clock, 
-  Heart
+  Scale,
 } from 'lucide-react';
 import TagInput from './TagInput';
 
@@ -29,12 +27,6 @@ interface FormError {
   message: string;
   field?: keyof FormData;
 }
-
-const fadeInUp = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.5 }
-};
 
 const pulseAnimation = {
   scale: [1, 1.05, 1],
